@@ -18,7 +18,7 @@ spec:
         name: {{.Values.sqlType}}
         envFrom:
           - secretRef:
-              name: {{ .Values.name }}-{{ .Values.sqlImageTag }}-secret
+              name: {{ .Values.name }}-{{ .Values.sqlType }}-secret
         ports:
         - containerPort: 3306
           name: {{.Values.sqlType}}
