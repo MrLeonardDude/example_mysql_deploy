@@ -20,7 +20,7 @@ spec:
           - secretRef:
               name: {{ .Values.name }}-{{ .Values.sqlType }}-secret
         ports:
-        - containerPort: 3306
+        - containerPort: 5432
           name: {{.Values.sqlType}}
         volumeMounts:
         - name: {{.Values.sqlType}}-persistent-storage
