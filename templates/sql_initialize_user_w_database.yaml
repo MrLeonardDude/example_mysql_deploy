@@ -22,7 +22,7 @@ spec:
               #!/bin/bash
               set -e
 
-              echo "CREATE USER {{snakecase .Values.name}} WITH PASSWORD '$POSTGRES_PASSWORD';\n CREATE DATABASE {{snakecase .Values.name}};\n ALTER DATABASE {{.Values.name}} OWNER TO {{snakecase .Values.name}};" > script.sql 
+              echo "CREATE USER {{snakecase .Values.name}} WITH PASSWORD '$POSTGRES_PASSWORD'; CREATE DATABASE {{snakecase .Values.name}}; ALTER DATABASE {{.Values.name}} OWNER TO {{snakecase .Values.name}};" > script.sql 
               SERVICE="{{ .Values.sqlType}}"
               DB_USER="postgres"
               echo "Running SQL file"
