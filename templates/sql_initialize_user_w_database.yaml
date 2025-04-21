@@ -6,10 +6,10 @@ metadata:
 spec:
   backoffLimit: 4
   template:
-    restartPolicy: OnFailure
     metadata:
       name: name
     spec:
+      restartPolicy: OnFailure
       containers:
         - name: run-sql
           image: postgres:latest  # This image includes the psql client
