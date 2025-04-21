@@ -22,17 +22,10 @@ spec:
               #!/bin/bash
               set -e
 
-              cat <<EOF > script.sql 
-CREATE USER {{.Values.name}} WITH PASSWORD '$POSTGRES_PASSWORD';
-CREATE DATABASE {{.Values.name}};
-ALTER DATABASE {{.Values.name}} OWNER TO {{.Values.name}};
-EOF
-
-              # Configurable variables
+              echo "CREATE USER {{.Values.name}} WITH PASSWORD '$POSTGRES_PASSWORD';\n CREATE DATABASE {{.Values.name}};\n ALTER DATABASE {{.Values.name}} OWNER TO {{.Values.name}};" > script.sql 
               SERVICE="{{ .Values.sqlType}}"
               DB_NAME="{{ .Values.name}}"
               DB_USER="postgres"
-
-              # Run the SQL file directly against the service
-              echo "Running SQL file:"
-              PGPASSWORD=$DB_PASS psql -h $SERVICE -U $DB_USER -d $DB_NAME -f script.sql
+              PGPASSWORD=$POSTGRES_PASSWORD
+              echo "Running SQL file"
+              psql -h $SERVICE -U $DB_USER -d $DB_NAME -f script.sql
