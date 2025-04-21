@@ -22,4 +22,8 @@ spec:
               #!/bin/bash
               set -e
 
-              echo "CREATE USER {{snakecase .Values.name}} WITH PASSWORD '$USER_PASSWORD'; CREATE DATABASE {{snakecase .Values.name}}; ALTER DATABASE {{snakecase .Values.name}} OWNER TO {{snakecase .Values.name}};"
+              echo "CREATE USER {{snakecase .Values.name}} WITH PASSWORD '$USER_PASSWORD' ; CREATE DATABASE {{snakecase .Values.name}}; ALTER DATABASE {{snakecase .Values.name}} OWNER TO {{snakecase .Values.name}};" > script.sql 
+              SERVICE="{{ .Values.sqlType}}"
+              DB_USER="postgres"
+              echo "Running SQL file"
+              PGPASSWORD=$POSTGRES_PASSWORD psql -h $SERVICE -U $DB_USER -f script.sql
