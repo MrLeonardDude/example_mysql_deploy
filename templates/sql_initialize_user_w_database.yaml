@@ -1,0 +1,38 @@
+# Creates a script that adds a generic namespace user that has access to the namespace database
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: initialize-{{.Values.sqlType}}-{{.Values.name}}
+spec:
+  backoffLimit: 4
+  template:
+    restartPolicy: OnFailure
+    metadata:
+      name: name
+    spec:
+      containers:
+        - name: run-sql
+          image: postgres:latest  # This image includes the psql client
+          command: ["/bin/bash", "-c"]
+          envFrom:
+            - secretRef:
+                name: {{ .Values.name }}-{{ .Values.sqlType }}-secret
+          args:
+            - |
+              #!/bin/bash
+              set -e
+
+              cat <<EOF > script.sql 
+CREATE USER {{.Values.name}} WITH PASSWORD '$POSTGRES_PASSWORD';
+CREATE DATABASE {{.Values.name}};
+ALTER DATABASE {{.Values.name}} OWNER TO {{.Values.name}};
+EOF
+
+              # Configurable variables
+              SERVICE="{{ .Values.sqlType}}"
+              DB_NAME="{{ .Values.name}}"
+              DB_USER="postgres"
+
+              # Run the SQL file directly against the service
+              echo "Running SQL file:"
+              PGPASSWORD=$DB_PASS psql -h $SERVICE -U $DB_USER -d $DB_NAME -f script.sql
