@@ -26,6 +26,5 @@ spec:
               SERVICE="{{ .Values.sqlType}}"
               DB_NAME="{{ .Values.name}}"
               DB_USER="postgres"
-              PGPASSWORD=$POSTGRES_PASSWORD
               echo "Running SQL file"
-              psql -h $SERVICE -U $DB_USER -d $DB_NAME -f script.sql
+              PGPASSWORD=$POSTGRES_PASSWORD psql -h $SERVICE -U $DB_USER -d $DB_NAME -f script.sql
